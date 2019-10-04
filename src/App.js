@@ -1,5 +1,6 @@
 import React from 'react';
 import './App.css';
+// import { isoCountries } from './countryCodes.js'
 
 class Location extends React.Component {
 
@@ -60,10 +61,16 @@ class Weather extends React.Component {
 class App extends React.Component {
   constructor(props) {
     super(props);
-    // this.state = {
-    //   city: '',
-    //   // country: '',
-    // };
+    this.state = {
+      city: undefined,
+      country: undefined,
+      temperature: undefined,
+      humidity: undefined,
+      low: undefined,
+      high: undefined,
+      pop: undefined,
+
+    };
 
     // this.handleChange = this.handleChange.bind(this);
     // this.handleSubmit = this.handleSubmit.bind(this);
@@ -88,19 +95,27 @@ class App extends React.Component {
     var found = false;
     // Get cityID from city name
     const data = require('./city.list.json');
+    const countryData = require('./countryCodes.json');
+
+    // Find country code from country name.
+    for (var j=0;j<countryData.length; j++) {
+      if (countryData[j].name.toLowerCase() === country.toLowerCase()) {
+        var countryCode = countryData[j].code;
+        break;
+      }
+    }
     
+
     for (var i=0; i<data.length; i++) {
-      if (data[i].name.toLowerCase() == city.toLowerCase() && 
-        data[i].country.toLowerCase() == country.toLowerCase()){
+      if (data[i].name.toLowerCase() === city.toLowerCase() && 
+        data[i].country.toLowerCase() === countryCode.toLowerCase()){
         found = true;
         var cityId = data[i].id;
-        console.log(cityId);
-
-        // alert('The city ' + this.state.city + ' has been submitted!');
+        break;
       }
     }
 
-    // TODO: update status "Are you sure the input is right?"
+    // TODO: update status "Are you sure the input is right?" error handling
     // if (found == false) {
 
     // }
@@ -110,7 +125,14 @@ class App extends React.Component {
           +'&appid=d801e2c4e7af34945bff26d22936710b');
     const response = await api_call.json();
     console.log(response);
+
+    // // Update state
+    console.log(response.list[0].main.temp);
+    // this.setState({
+    //   city:
+    // });
     
+
 
 
     

@@ -30,6 +30,14 @@ class Weather extends React.Component {
   render() {
     return (
       <div className="weatherBlock">
+        <div>
+          <p>{this.props.city}</p>
+          <p>{this.props.country}</p>
+          <p>{this.props.temperature}</p>
+          <p>{this.props.humidity}</p>
+          <p>{this.props.low}</p>
+          <p>{this.props.high}</p>
+        </div>
       {
         // <div className="weatherInfo">
         //     <InfoBoard/>
@@ -68,8 +76,6 @@ class App extends React.Component {
       humidity: undefined,
       low: undefined,
       high: undefined,
-      pop: undefined,
-
     };
 
     // this.handleChange = this.handleChange.bind(this);
@@ -85,8 +91,10 @@ class App extends React.Component {
 
   }
 
+  // // Below doesn't work because you have to bind the function
+  // async getWeather(event) {
+  getWeather = async (event) => {
 
-  async getWeather(event) {
     // Don't refresh page
     event.preventDefault();
 
@@ -96,6 +104,7 @@ class App extends React.Component {
     // Get cityID from city name
     const data = require('./city.list.json');
     const countryData = require('./countryCodes.json');
+    var isMetric = true;
 
     // Find country code from country name.
     for (var j=0;j<countryData.length; j++) {
@@ -115,22 +124,35 @@ class App extends React.Component {
       }
     }
 
+    // TODO: METRIC OR IMPERIAL???
+
     // TODO: update status "Are you sure the input is right?" error handling
     // if (found == false) {
 
     // }
 
-    const api_call = await fetch('http://api.openweathermap.org/data/2.5/forecast?id='
+    var call_str = 'http://api.openweathermap.org/data/2.5/weather?id='
           + cityId
-          +'&appid=d801e2c4e7af34945bff26d22936710b');
+          +'&appid=d801e2c4e7af34945bff26d22936710b';
+    if (isMetric) {
+      call_str = call_str + "&units=metric";
+    } else {
+      call_str = call_str + "&units=imperial";
+    }
+    const api_call = await fetch(call_str);
+    
     const response = await api_call.json();
-    console.log(response);
+    // console.log(response.name);
 
-    // // Update state
-    console.log(response.list[0].main.temp);
-    // this.setState({
-    //   city:
-    // });
+    // Update state
+    this.setState({
+      city: response.name,
+      country: response.sys.country,
+      temperature: response.main.temp,
+      humidity: response.main.humidity,
+      low: response.main.temp_min,
+      high: response.main.temp_max,
+    });
     
 
 
@@ -168,8 +190,17 @@ class App extends React.Component {
         <input type="submit" value="Find the weather for my city!"/>
       </form>
       
-      <Weather/> 
+      <Weather
+        city={this.state.city}
+        country={this.state.country}
+        temperature={this.state.temperature}
+        humidity={this.state.humidity}
+        low={this.state.low}
+        high={this.state.high}
+        /> 
     </div>
+
+
     );
 }
 

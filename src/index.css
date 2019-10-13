@@ -1,6 +1,16 @@
-.weatherInfo {
-	display: inline-block;
+.content {
+  width: 500px;
+  margin: auto;
 }
+.infoType {
+  text-align:left;
+}
+.infoValue {
+  text-align:right;
+}
+/*.weatherInfo {
+	display: inline-block;
+}*/
 
 body {
   margin: 20;

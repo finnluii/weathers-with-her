@@ -48,16 +48,16 @@ class Weather extends React.Component {
           <p> Country: {this.props.country}</p>
         } {
           this.props.temperature &&
-          <p>Temperature: {this.props.temperature}°</p>
+          <p>Temperature: {this.props.temperature}°C</p>
         } {
           this.props.humidity && 
           <p> Humidity: {this.props.humidity}</p>
         } {
           this.props.low &&
-          <p>Low: {this.props.low}°</p>
+          <p>Low: {this.props.low}°C</p>
         } {
           this.props.high &&
-          <p>High: {this.props.high}°</p>
+          <p>High: {this.props.high}°C</p>
         } {
           this.props.description &&
           <div>
@@ -74,12 +74,61 @@ class Weather extends React.Component {
 }
 
 class Checklist extends React.Component {
+  // createList() {
+  //   // Add items to wear to list depending on range of temperature.
+  //   var itemsToBring = [];
+
+  //   // If it's raining, bring an umbrella!
+  //   const id = (this.props.id).toString();
+  //   var rain_pattern = /^[2,3,5][0-9]{2}$/;
+  //   var result = id.match(rain_pattern);
+  //   console.log(result);
+  //   if (result) { console.log('Bring an umbrella!'); }
+  // }
+
   render() {
-    // Create checklist
-    return null;
+    // Always wear sunscreen! Or else the UV rays will give you wrinkles >:(
+    var itemsToBring = ["SUNSCREEN!"];
+
+
+    // If it's raining, bring an umbrella!
+    const id = this.props.id;
+    var rain_pattern = /^[2,3,5][0-9]{2}$/;
+
+    if (rain_pattern.test(id)) { 
+      itemsToBring.push("Umbrella"); 
+    }
+
+    // Add clothes depending on temperature ranges
+    const temp = this.props.temperature;
+    if (temp >= 25) {
+      itemsToBring.push("t-shirt", "shorts/summer, short skirt", "sandals");
+    } else if (temp >= 18 && temp < 25) {
+      itemsToBring.push("short/long-sleeve t-shirt", "pants/jeans/short-midi skirt");
+    } else if (temp >= 10 && temp < 18) {
+      itemsToBring.push("sweater/fall jacket", "pants/jeans/midi skirt");
+    } else if (temp >= 4 && temp < 10) {
+      itemsToBring.push("fall jacket", "sweater", "pants/jeans/warm, long skirt", "booties",
+        "winter hat");
+    } else if (temp >= -10 && temp < 4) {
+      itemsToBring.push("winter jacket", "long-sleeve shirt", "pants/jeans/warm, long skirt", 
+        "winter boots", "winter hat");
+    } else if (temp < -10) {
+      itemsToBring.push("winter jacket", "sweater", "pants/jeans/warm, long skirt", "winter boots",
+        "thick socks", "winter hat", "gloves", "scarf");
+    }
+
+    console.log(itemsToBring);
+
+    // return checklist
+    return (
+      <div>
+        
+      </div>
+      );
   }
 
-  createList() {}
+  
 }
 
 class App extends React.Component {
@@ -160,7 +209,7 @@ class App extends React.Component {
         
         const response = await api_call.json();
         console.log(response);
-        console.log(response.weather[0].icon);
+        // console.log(response.weather[0].icon);
 
         // TODO: update status "Are you sure the input is right?" error handling
         // Update state

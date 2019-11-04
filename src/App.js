@@ -120,8 +120,9 @@ class Checklist extends React.Component {
       }
 
       console.log(itemsToBring);
+      // arrow function
       const checklist = itemsToBring.map((x) => {
-        return <div><input type="checkbox" key={x}/>{x}</div>
+        return <div key={x}><input type="checkbox"/>{x}</div>
       });
 
       // return checklist
@@ -290,17 +291,17 @@ class App extends React.Component {
       <form onSubmit={this.getWeather}>
         <label>
         
-          <input type="text" name="city" placeholder="City"
+          <input class="inputBox" type="text" name="city" placeholder="City..."
           />
 
-          <input type="text" name="country" placeholder="Country" 
+          <input class="inputBox" type="text" name="country" placeholder="Country..." 
           />
         
         </label>
-        <input type="submit" value="Find the weather for my city!"/>
+        <input id="findWeatherButton" type="submit" value="Search"/>
       </form>
       
-      <Weather
+      <Weather id="weather"
         city={this.state.city}
         country={this.state.country}
         temperature={this.state.temperature}
@@ -312,7 +313,7 @@ class App extends React.Component {
         error={this.state.error}
       /> 
 
-      <Checklist
+      <Checklist id="checklist"
         temperature={this.state.temperature}
         humidity={this.state.humidity}
         low={this.state.low}

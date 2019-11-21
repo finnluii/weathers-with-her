@@ -1,5 +1,70 @@
+#weatherBlock {
+  background: pink;
+  padding: 10px;
+}
+
+/*#weatherBlock Weather:empty {
+  display: none;
+}*/
+
+#checklist {
+  background: black;
+}
+body {
+  margin: 0;
+  margin-bottom: 5px;
+}
+#main {
+  text-align: center;
+}
+
+#header {
+
+  margin: 0;
+  height: 200px;
+  background-color: #0099cc;
+  font-family:"Arial", "Century Gothic", "Helvetica";
+}
+
+.infoType {
+  text-align:left;
+}
+.infoValue {
+  text-align:right;
+}
+
+#locationInput {
+  width: 100%;
+  /*display: flex;
+  justify-content: center;*/
+}
+
+.inputBox {
+  height: 40px;
+  /*width: 200px;*/
+  width: 39%;
+  font-size:13px;
+}
+#findWeatherButton {
+  width: 20%;
+  height: 100%;
+  background-color: grey;
+  padding: 13px 10px;
+  font-size:13px;
+
+  /*height: 400px;*/
+  /*width:200px;*/
+}
+
+
+/*.weatherInfo {
+  display: inline-block;
+}*/
+
 .App {
   text-align: center;
+  width: 600px;
+  margin: auto;
 }
 
 .App-logo {

@@ -32,7 +32,7 @@ class Weather extends React.Component {
 
 
     return (
-      <div className="weatherBlock">
+      <div id="weatherBlock">
         <div>
         {
           // Check if there is valid input before displaying weather info
@@ -42,26 +42,26 @@ class Weather extends React.Component {
           <img src={"http://openweathermap.org/img/wn/"+ this.props.code + "@2x.png"} alt="weather icon"/>
         } {
           this.props.city && 
-          <p> <span> City: </span> {this.props.city}</p>
+          <p> <span> <b> City:</b> </span> {this.props.city}</p>
         } {
           this.props.country &&
-          <p> Country: {this.props.country}</p>
+          <p> <b>Country: </b> {this.props.country}</p>
         } {
           this.props.temperature &&
-          <p>Temperature: {this.props.temperature}°C</p>
+          <p><b>Temperature:</b>  {this.props.temperature}°C</p>
         } {
           this.props.humidity && 
-          <p> Humidity: {this.props.humidity}</p>
+          <p> <b>Humidity: </b> {this.props.humidity}</p>
         } {
           this.props.low &&
-          <p>Low: {this.props.low}°C</p>
+          <p><b>Low: </b> {this.props.low}°C</p>
         } {
           this.props.high &&
-          <p>High: {this.props.high}°C</p>
+          <p><b>High: </b> {this.props.high}°C</p>
         } {
           this.props.description &&
           <div>
-            <p>Description: {this.props.description}</p>
+            <p><b>Description: </b> {this.props.description}</p>
           </div>
         } {
           this.props.error &&
@@ -280,7 +280,7 @@ class App extends React.Component {
 
   render() {
   return (
-    <div>
+    <div id="main">
       <h1> Hey, Mother Nature. What should I wear today? </h1>
       {
       //    Note: do this instead of calling this.getWeather() (will get Type Error),
@@ -289,7 +289,7 @@ class App extends React.Component {
       
       }
       <form onSubmit={this.getWeather}>
-        <label>
+        <label id="locationInput">
         
           <input class="inputBox" type="text" name="city" placeholder="City..."
           />
@@ -297,8 +297,9 @@ class App extends React.Component {
           <input class="inputBox" type="text" name="country" placeholder="Country..." 
           />
         
+      
+          <input id="findWeatherButton" type="submit" value="Search"/>
         </label>
-        <input id="findWeatherButton" type="submit" value="Search"/>
       </form>
       
       <Weather id="weather"

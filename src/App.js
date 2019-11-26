@@ -33,7 +33,6 @@ class Weather extends React.Component {
 
     return (
       <div id="weatherBlock">
-        <div>
         {
           // Check if there is valid input before displaying weather info
         } {
@@ -67,7 +66,6 @@ class Weather extends React.Component {
           this.props.error &&
           <p>{this.props.error}</p>
         } 
-        </div>
       </div>
       );
   }
@@ -168,10 +166,18 @@ class App extends React.Component {
 
   }
 
-  // // Use arrow function to bind the function
-  // async getWeather(event) {
+  /* Declaring the async function like this doesn't bind 'this' to its context/
+  when we call getWeather(), it rescopes 'this', so it doesn't know what is 
+  this.state/this.props (they're undefined)
+  async getWeather(event) {
+  , have to bind it in the constructor:
+  this.getWeather = this.getWeather.bind(this); */
 
-  // Bind 'this' to its context, otherwise this (during setState) is null.
+
+  // Use arrow function instead, otherwise this (during setState) is null.
+  // This works because arrow functions maintain 'this' from their declaring scope, ie the 
+  // App component & constructor
+  // more info: https://medium.com/@joespinelli_6190/using-arrow-functions-to-avoid-binding-this-in-react-5d7402eec64
   getWeather = async (event) => {
 
     // Don't refresh page
@@ -272,9 +278,12 @@ class App extends React.Component {
   }
 
   // handleSubmit(event) {
-  //   alert('The city ' + this.state.city + ' has been submitted!');
-  //   event.preventDefault();
-  // }
+    handleSubmit = (event) => {
+    event.preventDefault();
+    alert('The city ' + this.state.city + ' has been submitted!');
+    console.log('handleSubmit')
+    
+  }
 
   
 
@@ -288,7 +297,7 @@ class App extends React.Component {
       // this.getWeather = passing the reference of the function to call on submit.
       
       }
-      <form onSubmit={this.getWeather}>
+      <form onSubmit={this.handleSubmit}>
         <label id="locationInput">
         
           <input class="inputBox" type="text" name="city" placeholder="City..."

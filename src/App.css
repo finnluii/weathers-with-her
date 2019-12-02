@@ -2,10 +2,10 @@
   background: pink;
   padding: 10px;
 }
-
-/*#weatherBlock Weather:empty {
+/*#weatherBlock:empty {
   display: none;
 }*/
+
 
 #checklist {
   background: black;
@@ -19,11 +19,23 @@ body {
 }
 
 #header {
-
+  /*position: absolute;*/
   margin: 0;
   height: 200px;
-  background-color: #0099cc;
+  width: 100vw;
+  /*background-color: #0099cc;*/
+  background-image: url("https://images.unsplash.com/photo-1528818955841-a7f1425131b5?ixlib=rb-1.2.1&w=1000&q=80");
+  background-size: 100%;
+  color: #f2f2f2;
+  text-align: center;
+  line-height: 200px; 
+  font-size: 7vw;
   font-family:"Arial", "Century Gothic", "Helvetica";
+}
+span {
+  display: inline-block;
+  vertical-align: middle;
+  line-height: normal; 
 }
 
 .infoType {

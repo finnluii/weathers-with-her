@@ -1,6 +1,8 @@
 #weatherBlock {
-  background: pink;
+  /*background: pink;*/
   padding: 10px;
+  text-align: left;
+  float:left;
 }
 /*#weatherBlock:empty {
   display: none;
@@ -8,12 +10,15 @@
 
 
 #checklist {
-  background: black;
+  /*background: black;*/
+  text-align: left;
+  float:right;
 }
 body {
   margin: 0;
   margin-bottom: 5px;
 }
+
 #main {
   text-align: center;
 }

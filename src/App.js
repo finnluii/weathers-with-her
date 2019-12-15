@@ -120,12 +120,12 @@ class Checklist extends React.Component {
       console.log(itemsToBring);
       // arrow function
       const checklist = itemsToBring.map((x) => {
-        return <div key={x}><input type="checkbox"/>{x}</div>
+        return <div key={x}><p><input type="checkbox"/>{x}</p></div>
       });
 
       // return checklist
       return (
-        <div>
+        <div id="checklist">
           {checklist}
         </div>
         );
@@ -297,7 +297,7 @@ class App extends React.Component {
       // this.getWeather = passing the reference of the function to call on submit.
       
       }
-      <form onSubmit={this.handleSubmit}>
+      <form onSubmit={this.getWeather}>
         <label id="locationInput">
         
           <input class="inputBox" type="text" name="city" placeholder="City..."
@@ -311,7 +311,7 @@ class App extends React.Component {
         </label>
       </form>
       
-      <Weather id="weather"
+      <Weather
         city={this.state.city}
         country={this.state.country}
         temperature={this.state.temperature}

@@ -34,7 +34,12 @@ class Weather extends React.Component {
     return (
       <div id="weatherBlock">
         {
-          // Check if there is valid input before displaying weather info
+          /* Check if there is valid input before displaying weather info using 
+           'Conditional rendering'
+
+          Later, need to check of props is undefined or else when temperature == 0,
+          it will return falsy
+          */
         } {
 
           this.props.code &&
@@ -46,16 +51,16 @@ class Weather extends React.Component {
           this.props.country &&
           <p> <b>Country: </b> {this.props.country}</p>
         } {
-          this.props.temperature &&
+          (this.props.temperature != undefined) &&
           <p><b>Temperature:</b>  {this.props.temperature}°C</p>
         } {
           this.props.humidity && 
           <p> <b>Humidity: </b> {this.props.humidity}</p>
         } {
-          this.props.low &&
+          (this.props.low != undefined) &&
           <p><b>Low: </b> {this.props.low}°C</p>
         } {
-          this.props.high &&
+          (this.props.high != undefined) &&
           <p><b>High: </b> {this.props.high}°C</p>
         } {
           this.props.description &&

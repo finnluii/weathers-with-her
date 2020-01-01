@@ -1,5 +1,6 @@
 import React from 'react';
 import './App.css';
+import cookie from "react-cookie";
 // import { isoCountries } from './countryCodes.js'
 
 // class Location extends React.Component {

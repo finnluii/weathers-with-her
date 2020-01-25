@@ -1,37 +1,9 @@
 import React from 'react';
 import './App.css';
 import cookie from "react-cookie";
-// import { isoCountries } from './countryCodes.js'
-
-// class Location extends React.Component {
-
-// }
-
-class InfoBoard extends React.Component {
-  constructor(props) {
-    super(props);
-    this.state = {
-      high: null,
-      low: null,
-      pop: null,
-    }
-  }
-  render() {
-    return(
-      <div>
-        <ol>HIGH</ol>
-        <ol>LOW</ol>
-        <ol>P.O.P.</ol>
-      </div>
-      );
-  }
-}
 
 class Weather extends React.Component {
   render() {
-
-
-
     return (
       <div id="weatherBlock">
         {
@@ -52,16 +24,16 @@ class Weather extends React.Component {
           this.props.country &&
           <p> <b>Country: </b> {this.props.country}</p>
         } {
-          (this.props.temperature != undefined) &&
+          (this.props.temperature !== undefined) &&
           <p><b>Temperature:</b>  {this.props.temperature}°C</p>
         } {
           this.props.humidity && 
           <p> <b>Humidity: </b> {this.props.humidity}</p>
         } {
-          (this.props.low != undefined) &&
+          (this.props.low !== undefined) &&
           <p><b>Low: </b> {this.props.low}°C</p>
         } {
-          (this.props.high != undefined) &&
+          (this.props.high !== undefined) &&
           <p><b>High: </b> {this.props.high}°C</p>
         } {
           this.props.description &&
@@ -206,6 +178,7 @@ class App extends React.Component {
 
       for (var i=0; i<data.length; i++) {
         if (data[i].name.toLowerCase() === city.toLowerCase() && 
+          countryCode &&
           data[i].country.toLowerCase() === countryCode.toLowerCase()){
           found = true;
           var cityId = data[i].id;
@@ -215,16 +188,22 @@ class App extends React.Component {
       if (cityId) {
         // TODO: METRIC OR IMPERIAL???
       
-        var call_str = 'http://api.openweathermap.org/data/2.5/weather?id='
-              + cityId
-              +'&appid=d801e2c4e7af34945bff26d22936710b';
+        // var call_str = 'http://api.openweathermap.org/data/2.5/weather?id='
+        //       + cityId
+        //       +'&appid=d801e2c4e7af34945bff26d22936710b';
+
+        var call_str = 'http://api.openweathermap.org/data/2.5/weather?' +
+        'lat=43.582259199999996&lon=-79.683584'+'&appid=d801e2c4e7af34945bff26d22936710b';;
 
         if (this.state.isMetric) {
           call_str = call_str + "&units=metric";
         } else {
           call_str = call_str + "&units=imperial";
         }
-        const api_call = await fetch(call_str);
+
+        const api_call = await fetch(call_str)
+            .catch(err => alert("Failed promise..."));
+      
         
         const response = await api_call.json();
         console.log(response);
@@ -274,24 +253,26 @@ class App extends React.Component {
         error: "Error. Please specify the city and country!",
       });
     }
-    
-    
 
-
-
-    
-    
   }
 
-  // handleSubmit(event) {
-    handleSubmit = (event) => {
-    event.preventDefault();
-    alert('The city ' + this.state.city + ' has been submitted!');
-    console.log('handleSubmit')
+  // // handleSubmit(event) {
+  //   handleSubmit = (event) => {
+  //   event.preventDefault();
+  //   alert('The city ' + this.state.city + ' has been submitted!');
+  //   console.log('handleSubmit')
     
-  }
+  // }
 
   
+  getLocation = (event) => {
+    // Don't refresh page
+    event.preventDefault();
+    navigator.geolocation.getCurrentPosition((position) => {
+      alert('Longitude: ' + position.coords.longitude
+        + ', Latitude: ' + position.coords.latitude);
+    })
+  }
 
   render() {
   return (

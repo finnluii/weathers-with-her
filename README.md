@@ -1,5 +1,9 @@
+### Running the Project
+Navigate to the root weathers-with-her repository, and run `npm start`. `localhost:3000` will automatically open.
+
 ### Resources
 Weather API, list of city codes: OpenWeatherMap
+
 <!-- This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
 
 ## Available Scripts

@@ -1,118 +1,8 @@
 import React from 'react';
 import './App.css';
 import cookie from "react-cookie";
-
-class Weather extends React.Component {
-  render() {
-    return (
-      <div id="weatherBlock">
-        {
-          /* Check if there is valid input before displaying weather info using 
-           'Conditional rendering'
-
-          Later, need to check of props is undefined or else when temperature == 0,
-          it will return falsy
-          */
-        } {
-
-          this.props.code &&
-          <img src={"http://openweathermap.org/img/wn/"+ this.props.code + "@2x.png"} alt="weather icon"/>
-        } {
-          this.props.city && 
-          <p> <span> <b> City:</b> </span> {this.props.city}</p>
-        } {
-          this.props.country &&
-          <p> <b>Country: </b> {this.props.country}</p>
-        } {
-          (this.props.temperature !== undefined) &&
-          <p><b>Temperature:</b>  {this.props.temperature}°C</p>
-        } {
-          this.props.humidity && 
-          <p> <b>Humidity: </b> {this.props.humidity}</p>
-        } {
-          (this.props.low !== undefined) &&
-          <p><b>Low: </b> {this.props.low}°C</p>
-        } {
-          (this.props.high !== undefined) &&
-          <p><b>High: </b> {this.props.high}°C</p>
-        } {
-          this.props.description &&
-          <div>
-            <p><b>Description: </b> {this.props.description}</p>
-          </div>
-        } {
-          this.props.error &&
-          <p>{this.props.error}</p>
-        } 
-      </div>
-      );
-  }
-}
-
-class Checklist extends React.Component {
-  // createList() {
-  //   // Add items to wear to list depending on range of temperature.
-  //   var itemsToBring = [];
-
-  //   // If it's raining, bring an umbrella!
-  //   const id = (this.props.id).toString();
-  //   var rain_pattern = /^[2,3,5][0-9]{2}$/;
-  //   var result = id.match(rain_pattern);
-  //   console.log(result);
-  //   if (result) { console.log('Bring an umbrella!'); }
-  // }
-
-  render() {
-    // Always wear sunscreen! Or else the UV rays will give you wrinkles >:(
-    if (this.props.id) { 
-      var itemsToBring = ["SUNSCREEN!"]; 
-    
-
-      // If it's raining, bring an umbrella!
-      const id = this.props.id;
-      var rain_pattern = /^[2,3,5][0-9]{2}$/;
-
-      if (rain_pattern.test(id)) { 
-        itemsToBring.push("Umbrella"); 
-      }
-
-      // Add clothes depending on temperature ranges
-      const temp = this.props.temperature;
-      if (temp >= 25) {
-        itemsToBring.push("t-shirt", "shorts/summer, short skirt", "sandals");
-      } else if (temp >= 18 && temp < 25) {
-        itemsToBring.push("short/long-sleeve t-shirt", "pants/jeans/short-midi skirt");
-      } else if (temp >= 10 && temp < 18) {
-        itemsToBring.push("sweater/fall jacket", "pants/jeans/midi skirt");
-      } else if (temp >= 4 && temp < 10) {
-        itemsToBring.push("fall jacket", "sweater", "pants/jeans/warm, long skirt", "booties",
-          "winter hat");
-      } else if (temp >= -10 && temp < 4) {
-        itemsToBring.push("winter jacket", "long-sleeve shirt", "pants/jeans/warm, long skirt", 
-          "winter boots", "winter hat");
-      } else if (temp < -10) {
-        itemsToBring.push("winter jacket", "sweater", "pants/jeans/warm, long skirt", "winter boots",
-          "thick socks", "winter hat", "gloves", "scarf");
-      }
-
-      console.log(itemsToBring);
-      // arrow function
-      const checklist = itemsToBring.map((x) => {
-        return <div key={x}><p><input type="checkbox"/>{x}</p></div>
-      });
-
-      // return checklist
-      return (
-        <div id="checklist">
-          {checklist}
-        </div>
-        );
-    }
-    return null;
-  }
-
-  
-}
+import Weather from "./Weather";
+import Checklist from "./Checklist";
 
 class App extends React.Component {
   constructor(props) {
@@ -165,8 +55,8 @@ class App extends React.Component {
     const country = event.target.elements.country.value;
     var found = false;
     // Get cityID from city name
-    const data = require('./city.list.json');
-    const countryData = require('./countryCodes.json');
+    const data = require('./resources/city.list.json');
+    const countryData = require('./resources/countryCodes.json');
     if (city && country) {
       // Find country code from country name.
       for (var j=0;j<countryData.length; j++) {
@@ -188,12 +78,12 @@ class App extends React.Component {
       if (cityId) {
         // TODO: METRIC OR IMPERIAL???
       
-        // var call_str = 'http://api.openweathermap.org/data/2.5/weather?id='
-        //       + cityId
-        //       +'&appid=d801e2c4e7af34945bff26d22936710b';
+        var call_str = 'http://api.openweathermap.org/data/2.5/weather?id='
+              + cityId
+              +'&appid=d801e2c4e7af34945bff26d22936710b';
 
-        var call_str = 'http://api.openweathermap.org/data/2.5/weather?' +
-        'lat=43.582259199999996&lon=-79.683584'+'&appid=d801e2c4e7af34945bff26d22936710b';;
+        // var call_str = 'http://api.openweathermap.org/data/2.5/weather?' +
+        // 'lat=43.582259199999996&lon=-79.683584'+'&appid=d801e2c4e7af34945bff26d22936710b';;
 
         if (this.state.isMetric) {
           call_str = call_str + "&units=metric";
@@ -267,61 +157,70 @@ class App extends React.Component {
   
   getLocation = (event) => {
     // Don't refresh page
+    console.log("I clicked.");
+    console.log(navigator.geolocation.getCurrentPosition());
     event.preventDefault();
     navigator.geolocation.getCurrentPosition((position) => {
       alert('Longitude: ' + position.coords.longitude
         + ', Latitude: ' + position.coords.latitude);
     })
+
+    var call_str = 'http://api.openweathermap.org/data/2.5/weather?' +
+        'lat=43.582259199999996&lon=-79.683584'+
+        '&appid=${process.env.REACT_APP_WEATHER_KEY}';;
   }
 
   render() {
-  return (
-    <div id="main">
-      <h1> Hey, Mother Nature. What should I wear today? </h1>
-      {
-      //    Note: do this instead of calling this.getWeather() (will get Type Error),
-      // Difference is: this.getWeather() = calling the function immediately.
-      // this.getWeather = passing the reference of the function to call on submit.
-      
-      }
-      <form onSubmit={this.getWeather}>
-        <label id="locationInput">
+    console.log(navigator.geolocation)
+    return (
+      <div id="main">
+        <h1> Hey, Mother Nature. What should I wear today? </h1>
+        {
+        //    Note: do this instead of calling this.getWeather() (will get Type Error),
+        // Difference is: this.getWeather() = calling the function immediately.
+        // this.getWeather = passing the reference of the function to call on submit.
         
-          <input class="inputBox" type="text" name="city" placeholder="City..."
-          />
+        }
+        <form onSubmit={this.getWeather}>
+          <label id="locationInput">
+          
+            <input class="inputBox" type="text" name="city" placeholder="City..."
+            />
 
-          <input class="inputBox" type="text" name="country" placeholder="Country..." 
-          />
+            <input class="inputBox" type="text" name="country" placeholder="Country..." 
+            />
+
+            <input id="findWeatherButton" type="submit" value="Search"/>
+          </label>
+        </form>
+
+        { navigator.geolocation  && <button onClick={this.getLocation}>Find my location!
+                </button>}
+        {/* <h2>{navigator.geolocation}</h2> */}
         
-      
-          <input id="findWeatherButton" type="submit" value="Search"/>
-        </label>
-      </form>
-      
-      <Weather
-        city={this.state.city}
-        country={this.state.country}
-        temperature={this.state.temperature}
-        humidity={this.state.humidity}
-        low={this.state.low}
-        high={this.state.high}
-        description={this.state.description}
-        code={this.state.code}
-        error={this.state.error}
-      /> 
+        <Weather
+          city={this.state.city}
+          country={this.state.country}
+          temperature={this.state.temperature}
+          humidity={this.state.humidity}
+          low={this.state.low}
+          high={this.state.high}
+          description={this.state.description}
+          code={this.state.code}
+          error={this.state.error}
+        /> 
 
-      <Checklist id="checklist"
-        temperature={this.state.temperature}
-        humidity={this.state.humidity}
-        low={this.state.low}
-        high={this.state.high}
-        id={this.state.id}
-      />
-    </div>
-
+        <Checklist id="checklist"
+          temperature={this.state.temperature}
+          humidity={this.state.humidity}
+          low={this.state.low}
+          high={this.state.high}
+          id={this.state.id}
+        />
+      </div>
 
     );
-}
+  }
 
 }
 

@@ -37,6 +37,7 @@ body {
   font-size: 7vw;
   font-family:"Arial", "Century Gothic", "Helvetica";
 }
+
 span {
   display: inline-block;
   vertical-align: middle;
@@ -79,6 +80,7 @@ span {
 }*/
 
 .App {
+  background-color: rgba(255,255,255,0.5);
   text-align: center;
   width: 600px;
   margin: auto;

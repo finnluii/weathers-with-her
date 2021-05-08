@@ -1,6 +1,6 @@
 import React from 'react';
 import './App.css';
-import cookie from "react-cookie";
+// import cookie from "react-cookie";
 import Weather from "./Weather";
 import Checklist from "./Checklist";
 
@@ -76,26 +76,34 @@ class App extends React.Component {
         }
       }
       if (cityId) {
+
+        // save user's city, country so that they don't have to enter their location
+        // every time they visit the site: 
+        // localStorage data is only cleared when there is some user 
+        // intervention/expiration date.  
+        localStorage.setItem('savedLocations', 'Tom');
+        console.log("localStorage: " + localStorage.getItem('savedLocations'));
+
         // TODO: METRIC OR IMPERIAL???
       
-        var call_str = 'http://api.openweathermap.org/data/2.5/weather?id='
+        var callStr = 'http://api.openweathermap.org/data/2.5/weather?id='
               + cityId
-              +'&appid=d801e2c4e7af34945bff26d22936710b';
+              +`&appid=${process.env.REACT_APP_WEATHER_KEY}`;
 
-        // var call_str = 'http://api.openweathermap.org/data/2.5/weather?' +
-        // 'lat=43.582259199999996&lon=-79.683584'+'&appid=d801e2c4e7af34945bff26d22936710b';;
+        // var callStr = 'http://api.openweathermap.org/data/2.5/weather?' +
+        // 'lat=43.582259199999996&lon=-79.683584'+'&appid=${process.env.REACT_APP_WEATHER_KEY}';;
 
         if (this.state.isMetric) {
-          call_str = call_str + "&units=metric";
+          callStr = callStr + "&units=metric";
         } else {
-          call_str = call_str + "&units=imperial";
+          callStr = callStr + "&units=imperial";
         }
 
-        const api_call = await fetch(call_str)
+        const apiCall = await fetch(callStr)
             .catch(err => alert("Failed promise..."));
       
         
-        const response = await api_call.json();
+        const response = await apiCall.json();
         console.log(response);
         // console.log(response.weather[0].icon);
 
@@ -155,23 +163,50 @@ class App extends React.Component {
   // }
 
   
-  getLocation = (event) => {
-    // Don't refresh page
-    console.log("I clicked.");
-    console.log(navigator.geolocation.getCurrentPosition());
-    event.preventDefault();
-    navigator.geolocation.getCurrentPosition((position) => {
-      alert('Longitude: ' + position.coords.longitude
-        + ', Latitude: ' + position.coords.latitude);
-    })
+  // getLocation = (event) => {
+  //   // Don't refresh page
+  //   console.log("I clicked.");
+  //   event.preventDefault();
+  //   navigator.geolocation.getCurrentPosition((position) => {
+  //     alert('Longitude: ' + position.coords.longitude
+  //       + ', Latitude: ' + position.coords.latitude);
+  //   })
 
-    var call_str = 'http://api.openweathermap.org/data/2.5/weather?' +
-        'lat=43.582259199999996&lon=-79.683584'+
-        '&appid=${process.env.REACT_APP_WEATHER_KEY}';;
+  //   var callStr = 'http://api.openweathermap.org/data/2.5/weather?' +
+  //       'lat=${position.coords.latitude}&lon=${position.coords.longitude}'+
+  //       '&appid=${process.env.REACT_APP_WEATHER_KEY}';;
+  // }
+
+  saveLocation = (location) => {
+    // Save location locally so users don't have to enter location every time
+    // they visit.
+    var existingLocations = localStorage.getItem('savedLocations');
+    existingLocations.add(location)
+    localStorage.setItem('savedLocations', existingLocations);
+    // console.log("localStorage: " + localStorage.getItem('savedLocations'));
+
   }
 
+  // componentDidMount() {
+  //   // Check that current position has been enabled. 
+  // Edit: This is BUGGY. the permissions API may not always work since
+  // OS level permissions may prevent this code from accessing the geolocation
+  // permissions, even if the browser itself allows it. For ex. This didn't
+  // work on Mac if you don't allow browsers from tracking you from 
+  // System Preferences. 
+  //   console.log("I'm in componentDidMount()")
+  //   navigator.permissions.query({name:'geolocation'}).then(result => {
+  //     console.log("result.state: ")
+  //     console.log(result.state)
+  //     if (result.state == "granted") {
+  //       this.setState({geolocation: true});
+  //     } else if (result.state == "denied") {
+  //       this.setState({Geolocation: false});
+  //     } 
+  //   });
+  // }
+
   render() {
-    console.log(navigator.geolocation)
     return (
       <div id="main">
         <h1> Hey, Mother Nature. What should I wear today? </h1>
@@ -191,12 +226,11 @@ class App extends React.Component {
             />
 
             <input id="findWeatherButton" type="submit" value="Search"/>
+           
           </label>
         </form>
 
-        { navigator.geolocation  && <button onClick={this.getLocation}>Find my location!
-                </button>}
-        {/* <h2>{navigator.geolocation}</h2> */}
+        <button onClick={() => this.saveLocation('test')}>Save Location</button>
         
         <Weather
           city={this.state.city}

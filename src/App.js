@@ -1,6 +1,7 @@
 import React from 'react';
 import './App.css';
 // import cookie from "react-cookie";
+import { Button } from '@material-ui/core';
 import Weather from "./Weather";
 import Checklist from "./Checklist";
 
@@ -178,6 +179,7 @@ class App extends React.Component {
   // }
 
   saveLocation = (location) => {
+    // TODO: Catch if location == null;
     // Save location locally so users don't have to enter location every time
     // they visit.
     var existingLocations = localStorage.getItem('savedLocations');
@@ -230,7 +232,7 @@ class App extends React.Component {
           </label>
         </form>
 
-        <button onClick={() => this.saveLocation('test')}>Save Location</button>
+        <Button onClick={() => this.saveLocation('test')} color="primary" variant="contained">Save Location</Button>
         
         <Weather
           city={this.state.city}

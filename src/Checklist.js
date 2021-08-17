@@ -1,4 +1,7 @@
 import React from 'react';
+import Box from '@material-ui/core/Box';
+import FormControlLabel from '@material-ui/core/FormControlLabel';
+import Checkbox from '@material-ui/core/Checkbox';
 
 class Checklist extends React.Component {
     // createList() {
@@ -51,14 +54,19 @@ class Checklist extends React.Component {
         console.log(itemsToBring);
         // arrow function
         const checklist = itemsToBring.map((x) => {
-            return <div key={x}><p><input type="checkbox"/>{x}</p></div>
+            // return <div key={x}><p><input type="checkbox"/>{x}</p></div>
+            return (
+                <FormControlLabel
+                control={<Checkbox name={x} />} label={x} color="palette.secondary.light"
+                />
+            )
         });
 
         // return checklist
         return (
-            <div id="checklist">
+            <Box color="palette.secondary.light">
             {checklist}
-            </div>
+            </Box>
             );
         }
         return null;

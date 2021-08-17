@@ -4,7 +4,7 @@ import React from 'react';
 class Weather extends React.Component {
   render() {
     return (
-      <div id="weatherBlock">
+      <div bgcolor="blue" id="weatherBlock">
         {
           /* Check if there is valid input before displaying weather info using 
            'Conditional rendering'

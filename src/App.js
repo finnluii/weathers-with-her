@@ -1,9 +1,12 @@
 import React from 'react';
-import './App.css';
+// import './App.css';
 // import cookie from "react-cookie";
-import { Button } from '@material-ui/core';
+import { Button, TextField, Box } from '@material-ui/core';
 import Weather from "./Weather";
 import Checklist from "./Checklist";
+
+import { ThemeProvider } from '@material-ui/core/styles'
+import theme from './theme'
 
 class App extends React.Component {
   constructor(props) {
@@ -28,7 +31,6 @@ class App extends React.Component {
   }
 
   handleChange(event) {
-    // console.log("hello we're in handleChange()")
     console.log("I'm here.");
     console.log("hello" + event.target.value);
     // this.setState({city: event.target.value});
@@ -182,6 +184,10 @@ class App extends React.Component {
     // TODO: Catch if location == null;
     // Save location locally so users don't have to enter location every time
     // they visit.
+    console.log('location:' + location);
+    if (location == null) {
+      return;
+    }
     var existingLocations = localStorage.getItem('savedLocations');
     existingLocations.add(location)
     localStorage.setItem('savedLocations', existingLocations);
@@ -210,51 +216,57 @@ class App extends React.Component {
 
   render() {
     return (
-      <div id="main">
-        <h1> Hey, Mother Nature. What should I wear today? </h1>
-        {
-        //    Note: do this instead of calling this.getWeather() (will get Type Error),
-        // Difference is: this.getWeather() = calling the function immediately.
-        // this.getWeather = passing the reference of the function to call on submit.
-        
-        }
-        <form onSubmit={this.getWeather}>
-          <label id="locationInput">
+      <ThemeProvider theme={theme}>
+        <div id="main">
+          <h1> Hey, Mother Nature. What should I wear today? </h1>
+          {
+          //    Note: do this instead of calling this.getWeather() (will get Type Error),
+          // Difference is: this.getWeather() = calling the function immediately.
+          // this.getWeather = passing the reference of the function to call on submit.
           
-            <input class="inputBox" type="text" name="city" placeholder="City..."
-            />
+          }
+          <form onSubmit={this.getWeather}>
+            <label id="locationInput">
+              <TextField id="filled-basic" label="City" variant="filled" name="city"/>
+              <TextField id="filled-basic" label="Country" variant="filled" name="country"/>
+              <Button variant="contained" color="primary" type="submit">
+                Search
+              </Button>
+            
+            </label>
+          </form>
 
-            <input class="inputBox" type="text" name="country" placeholder="Country..." 
-            />
 
-            <input id="findWeatherButton" type="submit" value="Search"/>
-           
-          </label>
-        </form>
+          <Box bgcolor="secondary.main" color="primary.contrastText" p={2}>
+            primary.main
+          </Box>
 
-        <Button onClick={() => this.saveLocation('test')} color="primary" variant="contained">Save Location</Button>
-        
-        <Weather
-          city={this.state.city}
-          country={this.state.country}
-          temperature={this.state.temperature}
-          humidity={this.state.humidity}
-          low={this.state.low}
-          high={this.state.high}
-          description={this.state.description}
-          code={this.state.code}
-          error={this.state.error}
-        /> 
+          <Button 
+            onClick={() => this.saveLocation('test')} 
+            color="primary" 
+            variant="contained">Save Location</Button>
+          
+          <Weather
+            city={this.state.city}
+            country={this.state.country}
+            temperature={this.state.temperature}
+            humidity={this.state.humidity}
+            low={this.state.low}
+            high={this.state.high}
+            description={this.state.description}
+            code={this.state.code}
+            error={this.state.error}
+          /> 
 
-        <Checklist id="checklist"
-          temperature={this.state.temperature}
-          humidity={this.state.humidity}
-          low={this.state.low}
-          high={this.state.high}
-          id={this.state.id}
-        />
-      </div>
-
+          <Checklist id="checklist"
+            temperature={this.state.temperature}
+            humidity={this.state.humidity}
+            low={this.state.low}
+            high={this.state.high}
+            id={this.state.id}
+          />
+        </div>
+      </ThemeProvider>
     );
   }
 

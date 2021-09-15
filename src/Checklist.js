@@ -3,7 +3,7 @@ import Box from '@material-ui/core/Box';
 import FormControlLabel from '@material-ui/core/FormControlLabel';
 import Checkbox from '@material-ui/core/Checkbox';
 
-class Checklist extends React.Component {
+function Checklist(props) {
     // createList() {
     //   // Add items to wear to list depending on range of temperature.
     //   var itemsToBring = [];
@@ -16,16 +16,16 @@ class Checklist extends React.Component {
     //   if (result) { console.log('Bring an umbrella!'); }
     // }
 
-    render() {
-        // Always wear sunscreen! Or else the UV rays will give you wrinkles >:(
-        // TODO Maybe it is better to keep all the items in a list and render them using
-        // map()
-        if (this.props.id) { 
+
+    // Always wear sunscreen! Or else the UV rays will give you wrinkles >:(
+    // TODO Maybe it is better to keep all the items in a list and render them using
+    // map()
+    if (props.id) {
         var itemsToBring = ["SUNSCREEN!"]; 
         
 
         // If it's raining, bring an umbrella!
-        const id = this.props.id;
+        const id = props.id;
         var rain_pattern = /^[2,3,5][0-9]{2}$/;
 
         if (rain_pattern.test(id)) { 
@@ -33,7 +33,7 @@ class Checklist extends React.Component {
         }
 
         // Add clothes depending on temperature ranges
-        const temp = this.props.temperature;
+        const temp = props.temperature;
         if (temp >= 25) {
             itemsToBring.push("t-shirt", "shorts/summer, short skirt", "sandals");
         } else if (temp >= 18 && temp < 25) {
@@ -68,9 +68,9 @@ class Checklist extends React.Component {
             {checklist}
             </Box>
             );
-        }
-        return null;
     }
+    return null;
 }
+
 
 export default Checklist;

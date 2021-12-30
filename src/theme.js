@@ -15,5 +15,10 @@ const theme = createTheme({
         contrastText: '#fff',
     }
   },
+  typography: {
+      button: {
+          minHeight: "56px"
+      }
+  }
 })
 export default theme;

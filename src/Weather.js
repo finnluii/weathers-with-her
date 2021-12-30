@@ -11,36 +11,25 @@ function Weather(props) {
         it will return falsy
         */
       } {
-
-        props.code &&
-        <img src={"http://openweathermap.org/img/wn/"+ props.code + "@2x.png"} alt="weather icon"/>
-      } {
-        props.city && 
-        <p> <span> <b> City:</b> </span> {props.city}</p>
-      } {
-        props.country &&
-        <p> <b>Country: </b> {props.country}</p>
-      } {
-        (props.temperature !== undefined) &&
-        <p><b>Temperature:</b>  {props.temperature}°C</p>
-      } {
-        props.humidity && 
-        <p> <b>Humidity: </b> {props.humidity}</p>
-      } {
-        (props.low !== undefined) &&
-        <p><b>Low: </b> {props.low}°C</p>
-      } {
-        (props.high !== undefined) &&
-        <p><b>High: </b> {props.high}°C</p>
-      } {
-        props.description &&
+        props.weather.weather &&
         <div>
-          <p><b>Description: </b> {props.description}</p>
+          <p>{props.weather.weather.error}</p>
+          {
+            /* Only show weather deets if there is no error */
+            !props.weather.weather.error &&
+            <div>
+              <img src={"http://openweathermap.org/img/wn/"+ props.weather.weather.code + "@2x.png"} alt="weather avatar"/>
+              <p><b>City:</b> {props.weather.weather.city}</p>
+              <p><b>Country: </b> {props.weather.weather.country}</p>
+              <p><b>Temperature:</b>  {props.weather.weather.temperature}°C</p>
+              <p><b>Low: </b> {props.weather.weather.low}°C</p>
+              <p><b>High: </b> {props.weather.weather.high}°C</p>
+              <p><b>Humidity: </b> {props.weather.weather.humidity}</p>
+              <p><b>Description: </b> {props.weather.weather.description}</p>
+            </div>
+          }
         </div>
-      } {
-        props.error &&
-        <p>{props.error}</p>
-      } 
+      }
     </div>
     );
 }

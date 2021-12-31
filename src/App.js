@@ -1,6 +1,6 @@
-import React, { useState }from 'react';
+import React, { useState } from 'react';
 // import './App.css';
-// import cookie from "react-cookie";
+import { useCookies } from "react-cookie";
 import { Button, TextField, Box } from '@material-ui/core';
 import Weather from "./Weather";
 import Checklist from "./Checklist";
@@ -8,9 +8,12 @@ import Checklist from "./Checklist";
 import { createStyles, makeStyles, ThemeProvider } from '@material-ui/core/styles'
 import theme from './theme'
 
+const data = require('./resources/city.list.json');
+const countryData = require('./resources/countryCodes.json');
+
 function App() {
   // States
-  const [allValues, setAllValues] = useState({
+  const weather = {
     city: undefined,
     country: undefined,
     temperature: undefined,
@@ -22,7 +25,9 @@ function App() {
     id: undefined,
     error: undefined,
     isMetric: true
-  });
+  }
+  const [allValues, setAllValues] = useState(weather);
+  const [cookies, setCookie, removeCookie] = useCookies(['cookie-name']);
   const handleChange = (event) => {
     console.log("I'm here.");
     console.log("hello" + event.target.value);
@@ -51,8 +56,6 @@ function App() {
     const country = event.target.elements.country.value;
     var found = false;
     // Get cityID from city name
-    const data = require('./resources/city.list.json');
-    const countryData = require('./resources/countryCodes.json');
     if (city && country) {
       // Find country code from country name.
       for (var j=0;j<countryData.length; j++) {
@@ -77,7 +80,7 @@ function App() {
         // every time they visit the site: 
         // localStorage data is only cleared when there is some user 
         // intervention/expiration date.  
-        localStorage.setItem('savedLocations', 'Tom');
+        localStorage.setItem('savedLocations', city);
         console.log("localStorage: " + localStorage.getItem('savedLocations'));
 
         // TODO: METRIC OR IMPERIAL???
@@ -89,7 +92,7 @@ function App() {
         // var callStr = 'http://api.openweathermap.org/data/2.5/weather?' +
         // 'lat=43.582259199999996&lon=-79.683584'+'&appid=${process.env.REACT_APP_WEATHER_KEY}';;
 
-        if (allValues.isMetric) {
+        if (weather.isMetric) {
           callStr = callStr + "&units=metric";
         } else {
           callStr = callStr + "&units=imperial";
@@ -106,47 +109,35 @@ function App() {
         // TODO: update status "Are you sure the input is right?" error handling
         // Update state
         setAllValues({
-          city: response.name,
-          country: response.sys.country,
-          temperature: response.main.temp,
-          humidity: response.main.humidity,
-          low: response.main.temp_min,
-          high: response.main.temp_max,
-          description: response.weather[0].description,
-          code: response.weather[0].icon,
-          id: response.weather[0].id,
-          error: undefined,
-        });     
+          weather: {
+            city: response.name,
+            country: response.sys.country,
+            temperature: response.main.temp,
+            humidity: response.main.humidity,
+            low: response.main.temp_min,
+            high: response.main.temp_max,
+            description: response.weather[0].description,
+            code: response.weather[0].icon,
+            id: response.weather[0].id,
+          }
+        });   
       } else {
         setAllValues({
-          city: undefined,
-          country: undefined,
-          temperature: undefined,
-          humidity: undefined,
-          low: undefined,
-          high: undefined,
-          description: undefined,
-          code: undefined,
-          id: undefined,
-          error: "Error. Please make sure your spelling is correct/Enter the full name " +
-          "of your city & country!"
+          weather: {
+            error: "Error. Please make sure your spelling is correct/Enter the full name " +
+            "of your city & country!"
+          }
         });
       }
     } else {
       setAllValues({
-        city: undefined,
-        country: undefined,
-        temperature: undefined,
-        humidity: undefined,
-        low: undefined,
-        high: undefined,
-        description: undefined,
-        code: undefined,
-        id: undefined,
-        error: "Error. Please specify the city and country!"
+        weather: {
+          error: "Error. Please specify the city and country!"
+        }
       });
 
     }
+    console.log('allValues: ' + JSON.stringify(allValues));
 
   };
 
@@ -182,9 +173,8 @@ function App() {
       return;
     }
     var existingLocations = localStorage.getItem('savedLocations');
-    existingLocations.add(location)
     localStorage.setItem('savedLocations', existingLocations);
-    // console.log("localStorage: " + localStorage.getItem('savedLocations'));
+    console.log("saveLocation's localStorage: " + localStorage.getItem('savedLocations'));
 
   }
 
@@ -224,7 +214,6 @@ function App() {
   );
 
   const classes = useStyles();
-
   console.log(classes.root);
   return (
     <ThemeProvider theme={theme}>
@@ -247,39 +236,22 @@ function App() {
           </label>
         </form>
 
-
-        <Box bgcolor="secondary.main" color="primary.contrastText" p={2}>
-          primary.main
-        </Box>
-
         <Button 
           onClick={() => saveLocation('test')} 
           color="primary" 
-          variant="contained">Save Location</Button>
+          variant="contained">
+            Save Location
+        </Button>
         
-        <Weather
-          city={allValues.city}
-          country={allValues.country}
-          temperature={allValues.temperature}
-          humidity={allValues.humidity}
-          low={allValues.low}
-          high={allValues.high}
-          description={allValues.description}
-          code={allValues.code}
-          error={allValues.error}
+        <Weather weather={allValues}
         /> 
 
         <Checklist id="checklist"
-          temperature={allValues.temperature}
-          humidity={allValues.humidity}
-          low={allValues.low}
-          high={allValues.high}
-          id={allValues.id}
+          weather={allValues}
         />
       </div>
     </ThemeProvider>
   );
 }
-
 
 export default App;

@@ -3,7 +3,11 @@ Navigate to the root weathers-with-her repository, and run `npm start`. `localho
 
 ### Resources
 Weather API, list of city codes: OpenWeatherMap
+<!-- 
+Removing npm modules (to save space): 
+https://trilon.io/blog/how-to-delete-all-nodemodules-recursively 
 
+-->
 <!-- This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
 
 ## Available Scripts

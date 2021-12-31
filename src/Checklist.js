@@ -8,24 +8,16 @@ function Checklist(props) {
     //   // Add items to wear to list depending on range of temperature.
     //   var itemsToBring = [];
 
-    //   // If it's raining, bring an umbrella!
-    //   const id = (this.props.id).toString();
-    //   var rain_pattern = /^[2,3,5][0-9]{2}$/;
-    //   var result = id.match(rain_pattern);
-    //   console.log(result);
-    //   if (result) { console.log('Bring an umbrella!'); }
-    // }
-
 
     // Always wear sunscreen! Or else the UV rays will give you wrinkles >:(
     // TODO Maybe it is better to keep all the items in a list and render them using
     // map()
-    if (props.id) {
+    if (props.weather.weather && !props.weather.weather.error) {
         var itemsToBring = ["SUNSCREEN!"]; 
         
 
         // If it's raining, bring an umbrella!
-        const id = props.id;
+        const id = props.weather.weather.id;
         var rain_pattern = /^[2,3,5][0-9]{2}$/;
 
         if (rain_pattern.test(id)) { 
@@ -33,7 +25,7 @@ function Checklist(props) {
         }
 
         // Add clothes depending on temperature ranges
-        const temp = props.temperature;
+        const temp = props.weather.weather.temperature;
         if (temp >= 25) {
             itemsToBring.push("t-shirt", "shorts/summer, short skirt", "sandals");
         } else if (temp >= 18 && temp < 25) {
@@ -57,7 +49,10 @@ function Checklist(props) {
             // return <div key={x}><p><input type="checkbox"/>{x}</p></div>
             return (
                 <FormControlLabel
-                control={<Checkbox name={x} />} label={x} color="palette.secondary.light"
+                key={x}
+                control={<Checkbox name={x} />} 
+                label={x} 
+                color="palette.secondary.light"
                 />
             )
         });

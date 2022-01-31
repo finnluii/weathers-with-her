@@ -14,17 +14,17 @@ const countryData = require('./resources/countryCodes.json');
 function App() {
   // States
   const weather = {
-    city: undefined,
-    country: undefined,
-    temperature: undefined,
-    humidity: undefined,
-    low: undefined,
-    high: undefined,
-    description: undefined,
-    code: undefined,
-    id: undefined,
-    error: undefined,
-    isMetric: true
+    City: undefined,
+    Country: undefined,
+    Temperature: undefined,
+    Humidity: undefined,
+    Low: undefined,
+    High: undefined,
+    Description: undefined,
+    Code: undefined,
+    Id: undefined,
+    Error: undefined,
+    IsMetric: true
   }
   const [allValues, setAllValues] = useState(weather);
   const [cookies, setCookie, removeCookie] = useCookies(['cookie-name']);
@@ -49,12 +49,11 @@ function App() {
   // more info: https://medium.com/@joespinelli_6190/using-arrow-functions-to-avoid-binding-this-in-react-5d7402eec64
   const getWeather = async (event) => {
 
-    // Don't refresh page
+    // Don't refresh page (originally caused by passing this function to onSubmit)
     event.preventDefault();
 
     const city = event.target.elements.city.value;
     const country = event.target.elements.country.value;
-    var found = false;
     // Get cityID from city name
     if (city && country) {
       // Find country code from country name.
@@ -65,11 +64,11 @@ function App() {
         }
       }
 
+      // TODO: array.filter() instead of for loop
       for (var i=0; i<data.length; i++) {
         if (data[i].name.toLowerCase() === city.toLowerCase() && 
           countryCode &&
           data[i].country.toLowerCase() === countryCode.toLowerCase()){
-          found = true;
           var cityId = data[i].id;
           break;
         }
@@ -99,7 +98,7 @@ function App() {
         }
 
         const apiCall = await fetch(callStr)
-            .catch(err => alert("Failed promise..."));
+            .catch(err => alert("Failed call to get weather..."));
       
         
         const response = await apiCall.json();
@@ -110,15 +109,15 @@ function App() {
         // Update state
         setAllValues({
           weather: {
-            city: response.name,
-            country: response.sys.country,
-            temperature: response.main.temp,
-            humidity: response.main.humidity,
-            low: response.main.temp_min,
-            high: response.main.temp_max,
-            description: response.weather[0].description,
-            code: response.weather[0].icon,
-            id: response.weather[0].id,
+            City: response.name,
+            Country: response.sys.country,
+            Temperature: response.main.temp,
+            Humidity: response.main.humidity,
+            Low: response.main.temp_min,
+            High: response.main.temp_max,
+            Description: response.weather[0].description,
+            Code: response.weather[0].icon,
+            Id: response.weather[0].id,
           }
         });   
       } else {
@@ -240,14 +239,14 @@ function App() {
           onClick={() => saveLocation('test')} 
           color="primary" 
           variant="contained">
-            Save Location
+            Save
         </Button>
         
-        <Weather weather={allValues}
+        <Weather weatherDetails={allValues}
         /> 
 
         <Checklist id="checklist"
-          weather={allValues}
+          weatherDetails={allValues}
         />
       </div>
     </ThemeProvider>

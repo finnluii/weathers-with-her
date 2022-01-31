@@ -2,22 +2,16 @@ import React from 'react';
 import Box from '@material-ui/core/Box';
 import FormControlLabel from '@material-ui/core/FormControlLabel';
 import Checkbox from '@material-ui/core/Checkbox';
+import Paper from '@mui/material/Paper';
 
 function Checklist(props) {
-    // createList() {
-    //   // Add items to wear to list depending on range of temperature.
-    //   var itemsToBring = [];
 
-
-    // Always wear sunscreen! Or else the UV rays will give you wrinkles >:(
-    // TODO Maybe it is better to keep all the items in a list and render them using
-    // map()
-    if (props.weather.weather && !props.weather.weather.error) {
+    const createList = (props) => {
+        // Always wear sunscreen! Or else the UV rays will give you wrinkles >:(
         var itemsToBring = ["SUNSCREEN!"]; 
-        
 
         // If it's raining, bring an umbrella!
-        const id = props.weather.weather.id;
+        const id = props.weatherDetails.weather.Id;
         var rain_pattern = /^[2,3,5][0-9]{2}$/;
 
         if (rain_pattern.test(id)) { 
@@ -25,7 +19,7 @@ function Checklist(props) {
         }
 
         // Add clothes depending on temperature ranges
-        const temp = props.weather.weather.temperature;
+        const temp = props.weatherDetails.weather.Temperature;
         if (temp >= 25) {
             itemsToBring.push("t-shirt", "shorts/summer, short skirt", "sandals");
         } else if (temp >= 18 && temp < 25) {
@@ -42,11 +36,14 @@ function Checklist(props) {
             itemsToBring.push("winter jacket", "sweater", "pants/jeans/warm, long skirt", "winter boots",
             "thick socks", "winter hat", "gloves", "scarf");
         }
+        return itemsToBring;
+    }
 
-        console.log(itemsToBring);
+    if (props.weatherDetails.weather && !props.weatherDetails.weather.error) {
+        const itemsToBring = createList(props);
+
         // arrow function
         const checklist = itemsToBring.map((x) => {
-            // return <div key={x}><p><input type="checkbox"/>{x}</p></div>
             return (
                 <FormControlLabel
                 key={x}
@@ -59,13 +56,12 @@ function Checklist(props) {
 
         // return checklist
         return (
-            <Box color="palette.secondary.light">
+            <Box color="palette.secondary.light" component={Paper}>
             {checklist}
             </Box>
-            );
+        );
     }
     return null;
 }
-
 
 export default Checklist;

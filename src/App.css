@@ -21,6 +21,8 @@ body {
 
 #main {
   text-align: center;
+  background-color: black;
+  min-width: 700px;
 }
 
 #header {
@@ -82,7 +84,7 @@ span {
 .App {
   background-color: rgba(255,255,255,0.5);
   text-align: center;
-  min-width: 600;
+  min-width: 600px;
   margin: auto;
 }
 

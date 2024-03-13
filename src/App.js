@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 // import './App.css';
 import { useCookies } from "react-cookie";
 import { Button, TextField, Box } from '@material-ui/core';
+import Grid from '@mui/material/Grid';
 import Weather from "./Weather";
 import Checklist from "./Checklist";
 
@@ -99,8 +100,9 @@ function App() {
 
         const apiCall = await fetch(callStr)
             .catch(err => alert("Failed call to get weather..."));
-      
         
+          
+        console.log('apiCall: ' + apiCall);
         const response = await apiCall.json();
         console.log(response);
         // console.log(response.weather[0].icon);
@@ -203,20 +205,21 @@ function App() {
   //   }
   // })
 
-  const useStyles = makeStyles((theme) =>
-    createStyles({
-      root: {
-        margin: theme.spacing(1),
-        height: 38
-      }
-    })
-  );
+  // const useStyles = makeStyles((theme) =>
+  //   createStyles({
+  //     root: {
+  //       margin: theme.spacing(1),
+  //       height: 38
+  //     }
+  //   })
+  // );
 
-  const classes = useStyles();
-  console.log(classes.root);
+  // const classes = useStyles();
+  // console.log(classes.root);
+
   return (
     <ThemeProvider theme={theme}>
-      <div id="main">
+      <div id="main" style={{'background-color': 'black'}}>
         <h1> Hey, Mother Nature. What should I wear today? </h1>
         {
         //    Note: do this instead of calling this.getWeather() (will get Type Error),
@@ -242,12 +245,16 @@ function App() {
             Save
         </Button>
         
-        <Weather weatherDetails={allValues}
-        /> 
-
-        <Checklist id="checklist"
-          weatherDetails={allValues}
-        />
+        <Grid container spacing={1}>
+          <Grid item xs={8}>
+              <Weather weatherDetails={allValues}/>    
+          </Grid>
+          <Grid item xs={8}>
+              <Checklist id="checklist"
+                weatherDetails={allValues}
+              />    
+          </Grid>
+        </Grid>
       </div>
     </ThemeProvider>
   );

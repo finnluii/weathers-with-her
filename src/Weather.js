@@ -22,12 +22,6 @@ function Weather(props) {
           <TableCell>R</TableCell>
           <TableCell>L</TableCell>
         </TableRow>] */
-      // Object.entries(props.weatherDetails.weather).map(([key, value]) => (
-      //   <TableRow>
-      //     <TableCell>{key}</TableCell>
-      //     <TableCell>{value}</TableCell>
-      //   </TableRow>
-      // ))
       Object.entries(props.weatherDetails.weather)
       .filter(([key]) => key != "Code" && key != "Id")
       .map(([key, value]) => (
@@ -57,7 +51,11 @@ function Weather(props) {
               <Table>
                 <TableBody>
                   <TableRow>
-                    <TableCell><img src={"http://openweathermap.org/img/wn/"+ props.weatherDetails.weather.Code + "@2x.png"} alt="weather avatar"/></TableCell>
+                    <TableCell>
+                      <img src={"http://openweathermap.org/img/wn/" + 
+                        props.weatherDetails.weather.Code + "@2x.png"} 
+                        alt="weather avatar"/>
+                    </TableCell>
                   </TableRow>
                   {weatherDetails(props)}
                 </TableBody>
